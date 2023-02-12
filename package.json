@@ -1,0 +1,52 @@
+{
+  "name": "web-vitals-google-analytics-shopify",
+  "version": "1.0.0",
+  "description": "Track Shopify Core Web Vitals in Google Analytics with a single line of code ",
+  "source": "src/web-vitals-ga.ts",
+  "main": "dist/web-vitals-ga.cjs.js",
+  "module": "dist/web-vitals-ga.mjs.js",
+  "browser": "dist/web-vitals-ga.js",
+  "types": "dist/web-vitals-ga.d.ts",
+  "repository": "git@github.com:RenderBetter/web-vitals-google-analytics-shopify.git",
+  "author": {
+    "name": "Render Better Team",
+    "email": "opensource@renderbetter.com",
+    "url": "http://www.renderbetter.com"
+  },
+  "bugs": {
+    "url": "https://github.com/RenderBetter/web-vitals-google-analytics-shopify/issues"
+  },
+  "license": "MIT",
+  "browserslist": [
+    "IE 11"
+  ],
+  "targets": {
+    "browser": {
+      "context": "browser",
+      "includeNodeModules": {
+        "web-vitals": true
+      }
+    }
+  },
+  "scripts": {
+    "watch:parcel": "parcel watch --dist-dir",
+    "watch:prettier": "onchange 'src/**/*.ts' -- prettier --write {{changed}} --config .prettierrc",
+    "watch": "npm-run-all --parallel watch:*",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/packager-ts": "2.8.3",
+    "@parcel/transformer-typescript-types": "2.8.3",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^2.8.3",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "onchange": "^7.1.0",
+    "web-vitals": "^3.1.1"
+  },
+  "bundledDependencies": [
+    "web-vitals"
+  ]
+}
