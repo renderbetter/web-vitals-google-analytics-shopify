@@ -50,8 +50,9 @@ const isGA4Enabled = function () {
     return false;
 };
 
+const currentScript = document.currentScript as HTMLScriptElement;
+
 const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['value']}) {
-    const currentScript = document.currentScript as HTMLScriptElement;
     const attributes = currentScript?.dataset || {};
 
     const debug = attributes.debug === 'true';
@@ -63,7 +64,7 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
     const eventLabel = shopifyTemplate || null;
 
     if (debug) {
-        console.log('[RB Analytics] Collecting', metric);
+        console.log('[Render Better Web Vitals] Collecting', metric);
     }
 
     if (isUAEnabled()) {
@@ -78,6 +79,7 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
             transport: 'beacon',
         };
         sendToGa('send', 'event', evt);
+        console.log('[Render Better Web Vitals] Sent UA event', evt);
     } else if (isGA4Enabled()) {
         // GA 4 events: https://developers.google.com/analytics/devguides/migration/ua/analyticsjs-to-gtagjs
         const evt = {
@@ -89,6 +91,7 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
             transport: 'beacon',
         };
         sendToGa('event', eventAction, evt);
+        console.log('[Render Better Web Vitals] Sent GA4 event', evt);
     }
 };
 
