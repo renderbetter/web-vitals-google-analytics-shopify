@@ -25,11 +25,12 @@
       "context": "browser",
       "includeNodeModules": {
         "web-vitals": true
-      }
+      },
+      "optimize": true
     }
   },
   "scripts": {
-    "watch:parcel": "parcel watch --dist-dir",
+    "watch:parcel": "parcel watch --target main --target module",
     "watch:prettier": "onchange 'src/**/*.ts' -- prettier --write {{changed}} --config .prettierrc",
     "watch": "npm-run-all --parallel watch:*",
     "build": "parcel build"
