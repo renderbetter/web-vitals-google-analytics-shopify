@@ -7,7 +7,7 @@ Simply add this script to your theme and load it roughly above the closing `</bo
 
 ```liquid
 <script
-    src="//cdn.jsdelivr.net/npm/web-vitals-google-analytics-shopify/dist/web-vitals-google-analytics-shopify.js"
+    src="//cdn.jsdelivr.net/npm/web-vitals-google-analytics-shopify/dist/web-vitals-google-analytics-shopify.min.js"
     data-shopify-template="{{ template }}" defer></script>
 ```
 

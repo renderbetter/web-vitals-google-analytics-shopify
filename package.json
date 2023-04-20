@@ -1,6 +1,6 @@
 {
   "name": "web-vitals-google-analytics-shopify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Track Shopify Core Web Vitals in Google Analytics with a single line of code ",
   "source": "src/index.ts",
   "main": "dist/web-vitals-google-analytics-shopify.cjs.js",
