@@ -1,6 +1,6 @@
 # Build output
 dist/*
-!dist/web-vitals-ga.js
+!dist/web-vitals-google-analytics-shopify.js
 
 # Logs
 logs

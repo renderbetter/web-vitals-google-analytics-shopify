@@ -6,7 +6,7 @@ Google Analytics!
 Simply add this script to your theme and load it roughly above the closing `</body>` tag like so:
 
 ```liquid
-<script src="{{ 'web-vitals-ga.js' | asset_url }}" data-perf-template="{{ template }}" defer></script>
+<script src="{{ 'web-vitals-google-analytics-shopify.js' | asset_url }}" data-perf-template="{{ template }}" defer></script>
 ```
 
 ## Data Attributes
