@@ -1,6 +1,6 @@
 # Core Web Vitals in Google Analytics for Shopify
 
-This script makes it incredibly simple to start tracking Core Web Vitals and other web performance metrics in
+This script makes it incredibly simple to start tracking Shopify Core Web Vitals and other web performance metrics in
 Google Analytics!
 
 Simply add this script to your theme and load it roughly above the closing `</body>` tag like so:
@@ -10,6 +10,10 @@ Simply add this script to your theme and load it roughly above the closing `</bo
     src="//cdn.jsdelivr.net/npm/web-vitals-google-analytics-shopify/dist/web-vitals-google-analytics-shopify.min.js"
     data-shopify-template="{{ template }}" defer></script>
 ```
+
+Learn more about how to use this script and how to optimize your site from this blog post about it here:
+
+[Track Core Web Vitals in Google Analytics with a single line of code](https://www.renderbetter.com/guides/track-core-web-vitals-in-google-analytics-line-of-code)
 
 ## Data Attributes
 
