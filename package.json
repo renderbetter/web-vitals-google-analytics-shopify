@@ -5,7 +5,7 @@
   "source": "src/index.ts",
   "main": "dist/web-vitals-google-analytics-shopify.cjs.js",
   "module": "dist/web-vitals-google-analytics-shopify.mjs.js",
-  "browser": "dist/web-vitals-google-analytics-shopify.js",
+  "browser": "dist/web-vitals-google-analytics-shopify.min.js",
   "types": "dist/web-vitals-google-analytics-shopify.d.ts",
   "repository": "git@github.com:RenderBetter/web-vitals-google-analytics-shopify.git",
   "author": {

@@ -6,7 +6,9 @@ Google Analytics!
 Simply add this script to your theme and load it roughly above the closing `</body>` tag like so:
 
 ```liquid
-<script src="{{ 'web-vitals-google-analytics-shopify.js' | asset_url }}" data-shopify-template="{{ template }}" defer></script>
+<script
+    src="//cdn.jsdelivr.net/npm/web-vitals-google-analytics-shopify/dist/web-vitals-google-analytics-shopify.js"
+    data-shopify-template="{{ template }}" defer></script>
 ```
 
 ## Data Attributes
@@ -18,6 +20,7 @@ The following data attributes can be used with the script:
 | `data-shopify-template`  | Sets the Shopify template used (this will show up in the event label) |
 | `data-event-action-prefix`  | Sets the prefix in front of the event. Defaults to `Web Performance: ` |
 | `data-event-category`  | Overrides the event category. Defaults to `Web Performance` |
+| `data-metric-decimals-places`  | Sets the number of decimals places to report for metrics. Defaults to `3` |
 
 ## Made with ❤️ by the [Render Better](https://www.renderbetter.com) team
 
