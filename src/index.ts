@@ -56,15 +56,15 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
     const attributes = currentScript?.dataset || {};
 
     const debug = attributes.debug === 'true';
-    const shopifyTemplate: string | undefined = attributes.perfTemplate;
-    const actionPrefix = attributes.perfActionPrefix || 'Web Vitals: ';
+    const shopifyTemplate: string | undefined = attributes.shopifyTemplate;
+    const actionPrefix = attributes.eventActionPrefix || 'Web Performance: ';
 
-    const eventCategory = attributes.perfCategory || 'Web Vitals by Render Better';
+    const eventCategory = attributes.eventCategory || 'Web Performance';
     const eventAction = `${actionPrefix}${metric.name}`;
     const eventLabel = shopifyTemplate || null;
 
     if (debug) {
-        console.log('[Render Better Web Vitals] Collecting', metric);
+        console.log('[web-vitals-google-analytics-shopify] Collecting', metric);
     }
 
     if (isUAEnabled()) {
@@ -79,7 +79,7 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
             transport: 'beacon',
         };
         sendToGa('send', 'event', evt);
-        console.log('[Render Better Web Vitals] Sent UA event', evt);
+        console.log('[web-vitals-google-analytics-shopify] Sent UA event', evt);
     } else if (isGA4Enabled()) {
         // GA 4 events: https://developers.google.com/analytics/devguides/migration/ua/analyticsjs-to-gtagjs
         const evt = {
@@ -91,7 +91,7 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
             transport: 'beacon',
         };
         sendToGa('event', eventAction, evt);
-        console.log('[Render Better Web Vitals] Sent GA4 event', evt);
+        console.log('[web-vitals-google-analytics-shopify] Sent GA4 event', evt);
     }
 };
 
