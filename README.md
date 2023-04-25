@@ -21,10 +21,10 @@ The following data attributes can be used with the script:
 
 | Attribute  | Description |
 | ------------- | ------------- |
-| `data-shopify-template`  | Sets the Shopify template used (this will show up in the event label) |
+| `data-shopify-template`  | Sets the Shopify template used (this will show up in the event label for Universal Analytics) |
 | `data-event-action-prefix`  | Sets the prefix in front of the event. Defaults to `Web Performance: ` |
 | `data-event-category`  | Overrides the event category. Defaults to `Web Performance` |
-| `data-metric-decimals-places`  | Sets the number of decimals places to report for metrics. Defaults to `3` |
+| `data-metric-decimals-places`  | Sets the number of decimals places to report for metrics (unavailable for analytics.js GA). Defaults to `3` |
 
 ## Made with ❤️ by the [Render Better](https://www.renderbetter.com) team
 

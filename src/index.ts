@@ -30,23 +30,17 @@ declare const window: Window & {
 window.dataLayer = window.dataLayer || [];
 
 const isUAEnabled = function () {
-    if (
+    return (
         window.trekkie &&
         window.trekkie.config &&
         window.trekkie.config['Google Analytics'] &&
         window.trekkie.config['Google Analytics'].trackingId &&
         window.trekkie.config['Google Analytics'].trackingId.startsWith('UA-')
-    ) {
-        return true;
-    }
-    return false;
+    );
 };
 
 const isGA4Enabled = function () {
-    if (window.trekkie && window.trekkie.config && window.trekkie.config['Google Gtag Pixel']) {
-        return true;
-    }
-    return false;
+    return window.trekkie && window.trekkie.config && window.trekkie.config['Google Gtag Pixel'];
 };
 
 const round = function (num: number, decimals: number) {
@@ -64,13 +58,10 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
 
     const eventCategory = attributes.eventCategory || 'Web Performance';
     const eventAction = `${actionPrefix}${metric.name}`;
-    const eventLabel = shopifyTemplate || null;
     const eventValue =
         metric.name !== 'CLS'
             ? round(metric.value / 1000, metricDecimalPlaces)
             : round(metric.value, metricDecimalPlaces);
-
-    const sendToGa = window.ga || window.gtag || ((...args: unknown[]) => window.dataLayer.push(args));
 
     const debug = 'debug' in attributes;
     const debugLog = (message: string, data?: unknown) => {
@@ -81,31 +72,72 @@ const sendMetricToGa = function (metric: {name: Metric['name']; value: Metric['v
 
     debugLog('Collecting', metric);
 
+    // UA data collection model: https://support.google.com/analytics/answer/11091422#universal-analytics
+    // event fields: https://developers.google.com/analytics/devguides/collection/analyticsjs/events#event_fields
+    const uaEventUsingAnalyticsJs = {
+        hitType: 'event',
+        eventCategory,
+        eventAction, // LCP, CLS, FID, etc.
+        eventLabel: shopifyTemplate || null,
+        eventValue: Math.round(Number(eventValue) * 1000), // analytics.js requires integer values
+        nonInteraction: true,
+        transport: 'beacon',
+    };
+
+    // GTag event model: https://developers.google.com/analytics/devguides/collection/gtagjs/events
+    // https://developers.google.com/analytics/devguides/migration/ua/analyticsjs-to-gtagjs
+    const uaEventUsingGtagJs = {
+        event_category: eventCategory,
+        event_label: shopifyTemplate || null,
+        value: eventValue,
+        non_interaction: true,
+        transport: 'beacon',
+    };
+
+    // GA4 event model: https://developers.google.com/analytics/devguides/collection/ga4/events
+    // https://support.google.com/analytics/answer/11091026#gtag-dual-tagging
+    const ga4EventUsingGtagJs = {
+        event_category: eventCategory,
+        shopify_template: shopifyTemplate,
+        value: eventValue,
+    };
+
     if (isUAEnabled()) {
-        // UA data collection model: https://support.google.com/analytics/answer/11091422#universal-analytics
-        // event fields: https://developers.google.com/analytics/devguides/collection/analyticsjs/events#event_fields
-        const evt = {
-            eventCategory,
-            eventAction, // LCP, CLS, FID, etc.
-            eventLabel,
-            eventValue,
-            nonInteraction: true,
-            transport: 'beacon',
-        };
-        sendToGa('send', 'event', evt);
-        debugLog('Sent UA event', evt);
+        // Send UA event
+        if (window.gtag) {
+            // Send UA event using gtag function
+            window.gtag('event', eventAction, uaEventUsingGtagJs);
+            debugLog('Sent UA event using gtag function', uaEventUsingGtagJs);
+        } else if (window.ga) {
+            // Send UA event using analytics.js
+            window.ga('send', uaEventUsingAnalyticsJs);
+            debugLog('Sent UA event using ga function', uaEventUsingAnalyticsJs);
+        } else {
+            // Push UA event to dataLayer and assume analytics.js data collection model
+            window.dataLayer.push(['event', uaEventUsingAnalyticsJs]);
+            debugLog('Pushed UA event analytics.js event into dataLayer', uaEventUsingGtagJs);
+        }
     } else if (isGA4Enabled()) {
-        // GA 4 events: https://developers.google.com/analytics/devguides/migration/ua/analyticsjs-to-gtagjs
-        const evt = {
-            event_category: eventCategory,
-            event_action: eventAction,
-            event_label: eventLabel,
-            value: eventValue,
-            non_interaction: true,
-            transport: 'beacon',
-        };
-        sendToGa('event', eventAction, evt);
-        debugLog('Sent GA4 event', evt);
+        // Send GA4 event
+        if (window.gtag) {
+            // Send GA4 event using gtag function
+            window.gtag('event', eventAction, ga4EventUsingGtagJs);
+            debugLog('Sent GA4 event using gtag function', ga4EventUsingGtagJs);
+        } else {
+            // Push GA4 event to dataLayer and assume gtag.js data collection model
+            window.dataLayer.push(['event', ga4EventUsingGtagJs]);
+            debugLog('Pushed GA4 event gtag.js event into dataLayer', ga4EventUsingGtagJs);
+        }
+    } else if (window.gtag) {
+        // Assume a UA model and send UA event using gtag function
+        // GA4 will convert the fields: https://support.google.com/analytics/answer/11091026#gtag-dual-tagging
+        window.gtag('event', eventAction, uaEventUsingGtagJs);
+        debugLog('Sent UA event using gtag function (unknown GA installation)', uaEventUsingGtagJs);
+    } else {
+        // Assume a UA model and push UA event into dataLayer
+        // GA4 will convert the fields: https://support.google.com/analytics/answer/11091026#gtag-dual-tagging
+        window.dataLayer.push(['event', uaEventUsingAnalyticsJs]);
+        debugLog('Pushed UA event gtag.js event into dataLayer (unknown GA installation)', uaEventUsingGtagJs);
     }
 };
 
